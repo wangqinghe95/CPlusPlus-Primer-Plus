@@ -171,3 +171,44 @@
     5. $ : 检查字符是否不为空， 不为空返回 true
 
 ### chapter 2-3 整数的判断与比较
+
+1. 常用的整数比较运算符
+    1. -eq = equal: 相等
+    2. -ne = not equal: 不想等
+    3. -gt = greater than: 大于
+    4. -ge = greater than or equal: 大于或者等于
+    5. -lt = less than: 小于
+    6. -le = less or equal: 小于或者等于
+2. 比较方法
+    1. test 3 -eq e && echo Y || echo N
+    2. [ 6 -eq 3 ] && echo Y || echo N
+3. 使用样例
+    1. grep Available /proc/meminfo | egrep -o "[0-9]+"
+    2. ps aux | wc -l
+
+### chapter 2-4 文件属性的判断和比较
+
+1. 常用的文件操作符（Linux中万物都是文件）
+    1. -e [string_name]: 判断文件或者目录是否存在，存在返回真，否则返回假
+    2. -f [string_name]: 判断文件是否存在，存在返回真，否则返回假
+    3. -d [string_name]: 判断文件夹是否存在，存在返回真，否则返回假
+    4. -b [string_name]: 判断块设备是否存在（磁盘，U盘等设备）
+    5. -c [string_name]: 判断字符设备是否存在（键盘，鼠标等设备）
+    6. -L [string_name]: 判断软链接是否存在）
+    7. -p [string_name]: 判断管道设备是否存在
+    8. -r [string_name]: 判断文件是否存在并且当前用户对该文件是否具有读权限
+    9. -w [string_name]: 判断文件是否存在并且当前用户对该文件是否具有写权限
+    10. -x [string_name]: 判断文件是否存在并且当前用户对该文件是否具有执行权限
+    11. -s [string_name]: 判断文件是否存在并且文件大小是否为空
+    12. [file1] -ef [file2]: 两个文件是否相同（使用相同设备，inode相同），是则返回真，否则返回假
+    13. [file1] -nt [file2]: file1比file2更新时返回真
+    14. [file1] -ot [file2]: file1比file2更旧时返回真
+2. 样例
+    1. [ -e file_1 ] && echo Y || echo N
+    2. [file_1 -ef file_2 ] && echo Y || echo N
+
+### chapter 2-5 [] 与 [[]] 的区别
+
+1. 区别：
+    + test 或者 [] 符合 POSIX 标准的测试语句，兼容性更强，几乎可以运行在所有 shell 解释器中
+    + [[]] 仅可运行在特定的几个 shell 解释器中，如 bash 或者 Zsh，此外 [[]] 内部可以是使用正则表达式
