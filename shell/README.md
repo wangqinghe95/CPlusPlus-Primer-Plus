@@ -212,3 +212,53 @@
 1. 区别：
     + test 或者 [] 符合 POSIX 标准的测试语句，兼容性更强，几乎可以运行在所有 shell 解释器中
     + [[]] 仅可运行在特定的几个 shell 解释器中，如 bash 或者 Zsh，此外 [[]] 内部可以是使用正则表达式
+    + [[]] 表达式中 > 和 < 表示排序比较的意思，使用的是本地的locale语言顺序
+        + 如果指定 LANG=C（ASCII 标准码的顺序中，小写字符 > 大写字母 > 数字）
+    + [[]] 中可以直接使用 && 和 || 逻辑运算符，而 [] 中需要使用 -a 和 -o 表示 与 和 或 逻辑运算符
+    + 在 [[]] 中 == 是模式匹配，允许使用通配符
+    + [[]] 中支持正则匹配
+
+## chapter 2-6 系统性能监控脚本
+
+1. mail
+    + 发送邮件的命令
+    + 需要安装
+        + sudo apt-get install mailutils
+    + 使用方式：
+        + mail -s "[mail_subject]" [mail_address] << "[mail content]"
+        + echo "[mail content]" | mail -s "[mail_subject] [mail_address]
+2. vmstat: virtual memory statistics
+    + 输出说明：
+        1. r: 正在运行的队列，如果该值过大表示 CPU 使用率很高
+        2. b: 阻塞的进程，正在等待资源的进程数，比如正在等待的 I/O，或者内存交换
+        3. swap: 虚拟空间使用的大小；大于 0 表示物理内存不足，或者内存泄露
+        4. free: 空闲的物理内存大小；
+        5. buff: 块设备读写时使用到的缓存
+        6. cache: 文件系统的 cache。如果该值过大，表示打开的文件较多
+        7. si: 每秒从磁盘读入虚拟内存的大小，如果该值大于 0，表示物理内存不够用了或者内存泄露
+        8. so: 每秒从虚拟内存写入到磁盘中的大小
+        9. bi: 块设备每秒接收的块数量，这里的块设备是指系统上所有磁盘和其他块设备。
+        10. bo: 块设备每秒发送的块数量，读取文件时，bo就会大于 0.
+        11. in: 每秒 CPU 的中断次数，包括时间中断
+        12. cs: 每秒上下文的切换
+        13. us: 用户 CPU 时间
+        14. sy: 系统 CPU 时间，如果数值过高，表示系统调用时间过长
+        15. id: 空闲 CPU 时间
+        16. wt: 等待 IO、CPU时间
+    + 常见的命令格式：
+        + vmstat [-a] [-n] [-S unit] [delay [count]]
+        + vmstat [-s] [-n] [-S unit]
+        + vmstat [-m] [-n] [delay [count]]
+        + vmstat [-d] [-n] [delay [count]]
+        + vmstat [-p disk partition] [-n] [delay [count]]
+        + vmstat [-f]
+        + vmstat [-V]
+    + 参数说明
+        + -a: 显示活跃和非活跃的内存
+        + -f: 显示从系统启动到此刻的 fork 数量
+        + -m: 显示 slabinfo
+        + -n: 只在开始时显示一次各字段名称
+        + -s: 显示内存相关统计信息及多种系统活动数量
+        + delay: 刷新时间间隔。默认显示一条结果
+        + count: 刷新次数，默认一直刷新
+        + -d: 显示磁盘的相关统计
