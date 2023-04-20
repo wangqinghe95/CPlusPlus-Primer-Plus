@@ -262,3 +262,31 @@
         + delay: 刷新时间间隔。默认显示一条结果
         + count: 刷新次数，默认一直刷新
         + -d: 显示磁盘的相关统计
+
+## chapter 2-7 单分支 if 语句
+
+1. 语法格式
+
+```
+if [condtion_expreesion]
+then
+    [code]
+fi
+```
+
+or
+
+```
+if [condtion_expreesion];then
+    [code]
+Fi
+```
+
+2. systemctl
+    + systemctl is-active [service]: 查看服务是否启动
+    + systemctl is-enabled [service]: 查看服务是否是开机自启项
+3. 查看系统某个软件是否已经安装
+    + which [program_name]
+    + whereis [program_name]
+4. wget 下载软件到指定目录
+    + wget -c [download_addree] -P [folder_path]
