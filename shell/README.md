@@ -290,3 +290,65 @@ Fi
     + whereis [program_name]
 4. wget 下载软件到指定目录
     + wget -c [download_addree] -P [folder_path]
+5. nmap 监测主机是否存活并且可以检测端口是否打开
+    + nmap [option] [scan_list]
+    + option:
+        + -sP: 仅执行 ping 扫描
+        + -sT: 仅针对 TCP 端口扫描
+        + -sS: 仅针对 TCP 端口半开扫描
+        + -sU: 仅针对 UDP 端口扫描
+        + -n: 禁止 DNS 反向解析
+        + -p: 指定需要的扫描的特定端口
+6. crontab : 定期执行程序的命令
+    + crontab -e [timer_parameter] [program]
+    + timer_parameter:
+        + timer_parameter 的参数是 f1 f2 f3 f4 f5 program
+        + 分钟，小时，一个月份的第几天，月份，一个星期天的第几天
+        + 每分钟执行一次：*****
+        + 每小时执行一次：0****
+        + 每天定时执行一次：00***
+        + 每周定时执行一次：00**0
+        + 每个月定时执行一次：001**
+        + 每月最后一天定时执行一次：00L**
+        + 每年定时执行一次：0011*
+    + example：
+        1. `0 6-12/3 * 12 * /usr/bin/backup`
+            + 在12月内，每天 6:00-12:00，每隔3个小时执行一次 /usr/bin/backup
+        2. `0 17 * * 1-5 mail -s "hi" alex@domain.com`
+            + 周一到周五每天下午 5:00 寄一封信给 alex@domain.com
+        3. `20 0-23/2 * * * echo "haha"`
+            + 每天的从 00:20 开始，每隔 2 小时就执行一次 echo "haha"
+        4. `0 */2 * * *  /sbin/service hhtpd restart`
+            + 每两小时开启一次apache
+        5. `50 7 * * * /sbin/service sshd start`
+            + 每天 7:50 开启 ssh 服务
+        6. `50 22 * * * /sbin/service sshd stop`
+            + 每天 22:50 关闭 ssh 服务
+        7. `0 0 1,15 * * fsck /home`
+            + 每月 1 号和 15 号检查 /home 盘
+        8. `1 * * * * /home/bruce/backup`
+            + 每小时的第一分执行 /home/bruce/backup 这个文件
+        9. `00 03 * * 1-5 find /home "*.xxx" -mtime +4 -exec rm {} \;`
+            + 每周一到周五 3 点钟，在目录 /home 下，查找文件名为 "*.txt" 文件，并删除 4 天前的文件
+        10. `30 6 */10 * * 15 ls`
+            + 每月的 1，11，21，31 日的 6:30 执行一次 ls
+    + 如果在 crontab 中无法执行脚本，而shell终端直接没有问题的话，主要是因为环境变量无法读取的问题
+        + 解决方法，有以下三种
+            1. 所有命令需要写成绝对路径形式：
+            2. shell脚本开头声明环境变量
+
+                ```
+                    #!/bin/bash
+                    . /etc/profile
+                    . ~/.bash_profile
+                ```
+
+            3. 在 /etc/crontab 中添加环境变量，在可执行命令之前添加命令 . /etc/profile;/bin/sh, 使环境变量生效如
+                `20 03 * * * . /etc/profile;/bin/sh /var/www/runoob/test.sh`
+7. curl: 命令行的文件传输工具
+    1. 语法格式：
+        + curl [option] URL
+8. case
+    + ;; 等同于 break
+    + ;;& 等同于没有 break
+    + ;& 等同于命中下一行的命令
