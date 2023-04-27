@@ -282,15 +282,20 @@ if [condtion_expreesion];then
 Fi
 ```
 
-2. systemctl
+### 2-8 单分支 if 语句
+
+1. systemctl
     + systemctl is-active [service]: 查看服务是否启动
     + systemctl is-enabled [service]: 查看服务是否是开机自启项
-3. 查看系统某个软件是否已经安装
+2. 查看系统某个软件是否已经安装
     + which [program_name]
     + whereis [program_name]
-4. wget 下载软件到指定目录
+3. wget 下载软件到指定目录
     + wget -c [download_addree] -P [folder_path]
-5. nmap 监测主机是否存活并且可以检测端口是否打开
+
+### 2-9 如何监控 HTTP 服务状态
+
+1. nmap 监测主机是否存活并且可以检测端口是否打开
     + nmap [option] [scan_list]
     + option:
         + -sP: 仅执行 ping 扫描
@@ -299,7 +304,7 @@ Fi
         + -sU: 仅针对 UDP 端口扫描
         + -n: 禁止 DNS 反向解析
         + -p: 指定需要的扫描的特定端口
-6. crontab : 定期执行程序的命令
+2. crontab : 定期执行程序的命令
     + crontab -e [timer_parameter] [program]
     + timer_parameter:
         + timer_parameter 的参数是 f1 f2 f3 f4 f5 program
@@ -345,10 +350,44 @@ Fi
 
             3. 在 /etc/crontab 中添加环境变量，在可执行命令之前添加命令 . /etc/profile;/bin/sh, 使环境变量生效如
                 `20 03 * * * . /etc/profile;/bin/sh /var/www/runoob/test.sh`
-7. curl: 命令行的文件传输工具
+3. curl: 命令行的文件传输工具
     1. 语法格式：
         + curl [option] URL
-8. case
+
+4. parted: 磁盘操作
+    + parted [options] [disk [operation_command]]
+    + [operation_command]:
+        1. help: 查看帮助
+        2. mklabel [LABEL_TYPE]: 新建分区表
+        3. mkpart PART-TYPE [FS-TYPE] START END: 新建分区
+        4. rm NUMBER: 删除分区
+    + example：
+        + parted /dev/sdc mklabel gpt
+            + 新建GPT分区表格式
+        + parted /dev/sdc print
+            + 查看磁盘分区信息
+
+### 2-11 简单高效的case语句
+
+1. case
     + ;; 等同于 break
     + ;;& 等同于没有 break
     + ;& 等同于命中下一行的命令
+
+### 2-13 模式匹配与通配符、扩展通配符
+
+1. 通配符
+    |通配符|描述|
+    |*****|****|
+    |*|匹配任意字符串|
+    |?|匹配任意单个字符串|
+    |[...]|匹配括号中的任意单个字符串|
+2. 扩展通配符
+    |扩展通配符|描述|
+    |*********|****|
+    |?(pattern_list)|匹配一次或者零次指定的模式列表|
+    |?(pattern_list)|匹配一次或者多次指定的模式列表|
+    |*(pattern_list)|匹配零次或者多次指定的模式列表|
+    |@(pattern_list)|仅匹配一次指定的模式列表|
+    |!(pattern_list)|匹配指定模式列表之外的所有内容|
+3. shopt: 查看所有变量
