@@ -391,3 +391,7 @@ Fi
     |@(pattern_list)|仅匹配一次指定的模式列表|
     |!(pattern_list)|匹配指定模式列表之外的所有内容|
 3. shopt: 查看所有变量
+    + shopt -s extglob: 激活指定的控制变量
+    + shopt extglob: 仅查看一个变量
+    + shopt -u extglob: 禁用指定的控制变量
+    
