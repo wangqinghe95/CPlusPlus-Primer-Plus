@@ -394,4 +394,55 @@ Fi
     + shopt -s extglob: 激活指定的控制变量
     + shopt extglob: 仅查看一个变量
     + shopt -u extglob: 禁用指定的控制变量
-    
+
+## chapter 3
+
+### chapter 3-1 for循环
+
+1. 格式1
+
+```
+for [variable_name] in [word...]
+do
+    [code]
+done
+```
+
+2. 格式2
+
+```
+for [variable_name]
+do
+    [code]
+done
+```
+
++ 此时默认的取值为 $@, 即所有位置变量的值。传入参数的值
++ word 支持多种拓展，比如变量替换，命令拓展，算术拓展，通配符拓展
+
+3. shell 扩展
+
++ {} 扩展
+    1. echo {1..5}
+    2. echo {5..1}
+    3. echo {1..10..2}
+    4. echo {a..z}
+    5. echo {A..Z}
+    6. echo {x,y{i,j}{1,2,3},z}
++ seq
+  + seq 1 5
+  + seq -s' ' 1 5
+  + seq 2 2 10
+  + seq -s' ' 8   # 不指定起始位置，默认从1开始
+  + i=5,j=10,seq -s' ' $i $j
+
+4. passwd
+    + 非交互式的添加/修改
+        + echo "[user_name]:[user_passwd]" | chpasswd
+5. 格式3
+```
+for ((expr1; expr2; expr3))
+do
+    [code]
+done
+```
