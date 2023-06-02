@@ -618,14 +618,14 @@ function [function_name]{
             + exec 12<&-
     + output:
         1. 创建仅可输入的文件描述符
-            + exec 13<test.txt 
+            + exec 13<test.txt
         2. 通过 cat 读取该文件描述符
             + cat <&13
         3. 关闭文件描述符
             + exec 13<&-
     + output/input
         1. 创建可输入输出的文件描述符
-            + exec 14<>test.txt 
+            + exec 14<>test.txt
         2. 通过 cat 读取该文件描述符
             + cat <&14
         3. 通过 &42 调用文件描述符写入数据
@@ -662,7 +662,6 @@ function [function_name]{
 
 4. 命名管道
     + 系统提供的命名管道（C++用的也是同一个系统函数
-
 
 ## chapter-5
 
@@ -736,6 +735,44 @@ function [function_name]{
 |${变量,匹配字符}|将变量中的大写字母替换成小写字母，仅替换第一个|
 |${变量,,匹配字符}|将变量中的大写字母替换成小写字母，替换所有|
 
+### chapter 5-4 命令替换
 
+1. $() 与 ``
 
+### chapter 5-5 算术替换
 
+1. 算术替换
+    + 通过算术替换扩展可以进行算术计算并返回计算结果
+    + 算术替换扩展的格式为 $(()),也可以使用 $[] 的形式
+    + 算法扩展支持嵌套
+2.example
+    + echo $((i++))
+    + echo $[++i]
+
+### chapter 5-6 进程替换
+
+1. 介绍
+    + 进程替换将进程的返回结果通过命名管道的方式传递给另外一个进程
+    + 一旦使用进程替换，系统将会在 /dev/fd 目录下创建文件描述符，通过该文件描述符将进程的输出结果传递给其他进程
+2. 语法格式
+    + <(Command) 或者 >(Command)
+3. 效果
+    + 使用进程我们可以将多个进程的输出结果传递给一个进程作为其输入参数。
+
+4. paste: 逐行读取多个文件的内容并将多个文件合并
+    + paste <(cut -d: -f1,6 /etc/passwd) <(cut -d: -f2 /etc/passwd)
+5. tee: 将内容重定向到文件中
+    + ls | tee <(grep sh$ > sh.log) <(grep conf$ > conf.log)
+
+### chapter 5-6 单词切割
+
+1. shell 使用 IFS 变量进行分词处理，默认使用 IFS 变量的值作为分隔符，对输入数据进行分词处理后执行命令。
+
+### chapter 5-6 路径替换
+
+1. 除非使用 set -f 禁用路径替换，否则 Bash 会在路径和文件名中对 * ? [ 符号进行模式匹配的替换
+2. 若 shopt 命令开启了 nocaseglob 选项，则 Bash 在模式匹配时不区分大小，默认是区别大小写
+3. shopt 命令开始 extglob，可以支持 拓展通配符
+4. example
+    + touch a{1,2,3,4}.txt
+    + rm -rf a[1-4].txt
