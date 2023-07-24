@@ -844,11 +844,11 @@ function [function_name]{
 5. tee: 将内容重定向到文件中
     + ls | tee <(grep sh$ > sh.log) <(grep conf$ > conf.log)
 
-### chapter 5-6 单词切割
+### chapter 5-7 单词切割
 
 1. shell 使用 IFS 变量进行分词处理，默认使用 IFS 变量的值作为分隔符，对输入数据进行分词处理后执行命令。
 
-### chapter 5-6 路径替换
+### chapter 5-8 路径替换
 
 1. 除非使用 set -f 禁用路径替换，否则 Bash 会在路径和文件名中对 * ? [ 符号进行模式匹配的替换
 2. 若 shopt 命令开启了 nocaseglob 选项，则 Bash 在模式匹配时不区分大小，默认是区别大小写
@@ -856,3 +856,76 @@ function [function_name]{
 4. example
     + touch a{1,2,3,4}.txt
     + rm -rf a[1-4].txt
+
+### chapter 5-10 解释器的属性与初始化命令行终端
+
+1. set 和 shopt 查看和设置 Bash 特性
+2. set -o
+    + 开启和关闭特定的 Bash 属性
+    + set 常用命令属性
+        | 属性 	| set选项 	| 功能描述 	|
+        |---	|---	|---	|
+        | allexport 	| [+-]a 	| 将函数和变量传递给子进程（默认关闭） 	|
+        | braceexpand 	| [+-]B 	| 支持花括号扩展（默认开启） 	|
+        | errexit 	| [+-]e 	| 当命令返回非0值时立刻退出（默认关闭） 	|
+        | hashall 	| [+-]h 	| 将该命令位置保存到Hash表（默认开启） 	|
+        | histexpand 	| [+-]H 	| 支持使用!对历史命令进行扩展替换（默认开启） 	|
+        | noclobber 	| [+-]C 	| Bash使用重定向操作符>、>&和<>时，不会覆盖已存在的文件，<br>可以使用>\|绕过该限制（默认关闭） 	|
+        | noexec 	| [+-]n 	| 仅读取命令，不执行命令，仅在脚本中有效（默认关闭） 	|
+    + example
+        + allexport 
+            ```
+            test=123    # 定义局部变量
+            bash        # 开启子进程
+            echo $test  # 子进程无法获取父进程变量
+            exit        # 退出父进程
+
+            set -a      # 开启 allexport
+            test=123
+            bash
+            echo $test  # 子进程可以获取父进程变量
+            exit
+            set +a      # 关闭 allexport
+            ```
+        +  braceexpand
+            ```
+            echo {a..c}     # 默认支持花括号扩展
+            set +B          # 关闭花括号扩展
+            echo {a..c}     
+            set -B          # 开启花括号扩展
+            ```
+        + hash
+            + hash -d [key_word]: 删除hash表中[key_word]的记录
+            + hash -r: 清空 hash 表
+3. shopt -s/-u
+    + 开启和关闭
+
+### chapter 5-11 trap 信号捕获
+1. trap：
+    + trap 命令是用于 Linux shell 脚本中指定如何处理信号。他用于监视和拦截 shell 脚本中应该处理的 Linux 信号。
+    + trap 的命令格式为：
+        + trap [command] [signal]
+        + 其中 [command] 是当 shell 收到指定的 [signal] 后应该被执行的命令
+    + example
+        + trap "echo 'Terminated..'; exit 1" SIGTERM
+        + 当 shell 脚本收到 SIGTERM 信号后，会打印 "Terminated..." 并且退出码为 1 
+2. tput: 
+    + tput 更改终端功能，比如移动或更改光标，更改文本属性，以及清除终端屏幕的特定区域
+    + 光标属性：
+        + tput clear 
+            + 清屏
+        + tput sc
+            + 保存当前光标位置
+        + tput cup 10 13
+            + 将光标移动到 row col
+        + tput civis
+            + 光标不可见
+        + tput cnorm
+            + 光标可见
+        + tput rc
+            + 显示输出
+
+### chapter 5-14 脚本排错技巧
+1. bash +x [script]
+2. echo 打印
+3. 单独执行命令验证
