@@ -929,3 +929,59 @@ function [function_name]{
 1. bash +x [script]
 2. echo 打印
 3. 单独执行命令验证
+
+### chapter 5-15 Shell 版本的进度条功能
+1. \r
+    + 将光标移动至行首，但不换行
+    + echo -e "abc\r12"
+    + i=5 && printf "|%s%${i}s|" abc
+2. printf
+    1. printf "%10s" xyz
+        + 指定输出宽度为10，不足则补空格，长度超过则按照实际长度显示
+    2. printf "%.2s" xyz
+        + 指定显示宽度为2，超过则剪裁掉超出部分
+    3. printf x; printf "\b%s" yz
+        + 显示字符 x，删除x后再显示字符 y
+3. 实现动态指针
+    1. rotate='|/-\'
+    2. echo ${rotate#?}
+    3. echo ${rotate%???}
+    4. rotate=${rotate#?}${rotate%???}
+    5. echo ${rotate}
+    6. rotate=${rotate#?}${rotate%???}
+    7. echo ${rotate}
+
+### chapter 5-16 传输传递 xargs
+1. 很多程序不支持使用管道传递参数，比如find，cut
+    + cut -d: -f1 /etc/passwd | echo
+    + find /etc/ -name *.conf -type f | echo
+2. 有一些程序命令可以命令参数中读取输入的数据，无法从管道中读取数据
+    + cat /var/run/crond.pid  | kill    # 报错
+    + echo /tmp/test.txt | rm           # 报错
+3. xargs 可以读取标准输入或者管道中的数据， 并将这些数据传递给其他程序作为参数
+    + cut -d: -f1 /etc/passwd | xargs       # 默认程序是 echo
+    + find -name "*.txt" | xargs grep "line"    # 过滤查找的文件（过滤的内容是文件内部的内容）
+    + find -name "*.txt" | xargs ls -al         # 查看文件详细内容信息
+4. 而xargs读取参数时以空格、tab制表符或者回车符为分隔符和结束符，但是有些文件名本身可能包含空格，此时xargs会理解一个文件有多个参数
+    + find 命令会在输出找到的文件吗后自动添加一个换行符
+    + find 提供 print0 选项，设置 find 在输出文件后自动添加一个 NULL 来替代换行符
+    + xargs 提供了一个 -0(数字零)选项，指定使用 NULL 而不是空格，Tab 制表符或者换行符作为结束符
+    + 这样对于 xargs 来说空格就变成了一个普通字符，只有 NULL 才被识别为参数的结束符
+    + touch "hello world.ext" "ni hao.txt"
+    + find ./ -name "*.txt" -print0 | xargs -0 rm
+5. xargs 可以通过 -a 从文件中读取参数传递给其他程序
+    + xargs -a /ect/hostname
+6. xargs 可以通过 -n 选项一次性读取几个参数，默认读出所有值
+    + seq 5 | xargs -n 2
+7. xargs 可以通过 -d 选项指定任意字符为分隔符，默认以空格，tab制表符或换行符为分隔符
+    + echo "helloatheaworld" | xargs -da
+8. xargs 可以通过 -I 选项指定一个替换字符串，xargs 会用读到的参数替换掉这个替换字符串
+    + touch {a,b,c}.txt
+    + ls *.txt | xargs -I[] cp [] /tmp/
+    + rm -rf /tmp/{a,b,c}.txt
+
+### chapter 5-17 使用shift移动位置参数
++ shift
+    + 可以左移位置参数，shift 命令后面需要一个非负整数作为参数，如果没有指定该参数，默认1
+    + 通过 shift 命令可以很方便的读取所有位置的参数
+
