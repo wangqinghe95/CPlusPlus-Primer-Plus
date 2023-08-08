@@ -137,5 +137,53 @@
         + sed '/new/c line' /tmp/hosts
             + 匹配包含 new 的行，替换成 line
     + 通过 r 指令将其他文件的内容读取并存入当前需要编辑的文件中；w 指令则将当前编辑的文件内容另存到其他文件中，如果目标文件存在，则另存时会覆盖目标文件内容
-        + 
+        + sed 'r /etc/hostname' /tmp/hosts
+            + 逐行读取 /tmp/hosts 文件内容，每读取一行内容执行一次 r 指令
+            + 会出现 /tmp/hosts 每行内容下都会有一个 /etc/hostname 的内容
+        + sed '1r /etc/hostname' /tmp/hosts
+            + 仅在第一行追加主机名
+        + sed '3r /etc/hostname' /tmp/hosts
+            + 仅在第三行追加主机名
+        + sed 'w /tmp/myhosts' /tmp/hosts
+            + 将 /tmp/hosts 文件另存到 /tmp/myhosts 文件中
+        + sed '1,3w /tmp/myhosts' /tmp/hosts
+            + 仅将第 1~3 行另存为新文件，文件会被覆盖
+    + Notes:
+        + 一般不要在使用类似于 3q 之类的指令时同时使用 -i 选项，这样会导致 sed 使用读取出来的 3 行数据，写入并覆盖源文件，从而导致源文件中的所有其他数据全部丢失
+    + 关键词替换
+        + sed 's/hello/hi/' test.txt
+            + 匹配 test.txt 文件中每行的第一个 hello 字符串替换成 hi
+        + sed '1s/jello/hi/' test.txt
+            + 匹配 test.txt 文件中第一行 hello 字符串替换成 hi
+        + sed 's/o/O/' test.txt
+            + 替换 test.txt 文件中每行的第一个 o 为 O
+        + sed 's/o/O/g' test.txt
+            + 替换 test.txt 文件中所有的 o 为 O
+        + sed 's/o/O/2' test.txt
+            + 替换 test.txt 文件中每行第二个 o 为 O
+        + sed -n 's/e/E/2p' test.txt
+            + 仅显示被替换的数据
+        + sed -n 's/e/E/gp' test.txt
+            + 全局替换并显示替换的数据
+        + sed 's/jacob/vicky/i' test.txt
+            + 在 s 替换指令的最后添加 i 标记可以忽略大小写，将 jacob 替换成 vicky
+    + 使用 s 替换指令时如果同时添加了 e 标记，则表示将替换后的内容当成 shell 命令在终端执行一次。
+        + echo "/etc/hosts" | sed 's/^/ls -l /e'
+            + 将 /etc/hosts 替换成 ls -l /etc/hosts, 替换成命令终端执行 ls -l /etc/hosts
+        + echo "tmpfile" | sed 's#^#touch /tmp/#e'
+            + 将 tmpfile 替换成 touch /tmp/tmpfile, 替换成命令终端执行该命令
+    + 正则替换
+        + sed 's/the//' test.txt
+            + 将 the 替换为空，即删除
+        + echo '"hello" "world"' | sed 's/\".*\"//'
+            + 匹配 " 开头， " 结尾和在其中间所有数据，并将其全部删除
+        + echo '"hello" "world"' | sed 's/\"[^\"]*\"//'
+            + 匹配第一个引号开始，中间不包括引号的任意其他字符（长度任意），最后是一个 " 结束的数据，当一行数据包含多个引号数据时，就可以仅仅匹配第一个双引号的数据
+        + sed -r 's/^(.)(.*)(.)$/\3\2\1/' test.txt
+            + 将每行首尾字符对调
+            + 使用 () 将匹配的数据保留，在后面通过 \n 调用前面保留的数据。
+                + 第一个 () 中保留的是每行开头的第一个字符 . 在正则表达式中表示任意的单个字符
+                + 第三个 () 中保留的是每行结束的最后一个字符
+                + 中间的 () 保留的是除首位字符外中间的所有字符，(.*) 在正则中表示任意长度的任意字符
+            
     
