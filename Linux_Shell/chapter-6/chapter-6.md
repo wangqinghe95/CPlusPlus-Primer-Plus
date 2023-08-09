@@ -185,5 +185,25 @@
                 + 第一个 () 中保留的是每行开头的第一个字符 . 在正则表达式中表示任意的单个字符
                 + 第三个 () 中保留的是每行结束的最后一个字符
                 + 中间的 () 保留的是除首位字符外中间的所有字符，(.*) 在正则中表示任意长度的任意字符
-            
+    + 在使用 s 指令进行替换时，默认使用 / 作为替换符号，但是当需要替换的内容本身包含 / 时需要对替换内容中的 / 使用 \ 转义。为了解决该问题，sed 使用其他字符作为替换符号
+        + sed 's/\/sbin\/nologin/\/bin\/sh/' /tmp/passwd
+            + 修改的是缓存中的内容，文件的内容并没有被替换
+            + 替换 /tmp/passwd 文档中所有 /sbin/nologin 为 /bin/sh
+        + sed 's#/sbin/nologin#/bin/sh#' /tmp/passwd
+        + sed 's,/sbin/nologin,/bin/sh,' /tmp/passwd
+        + sed 'sx/sbin/nologinx/bin/shx' /tmp/passwd
+            + 使用 s 指令的替换符号修改为其他字符
+    + sed 命令可以使用分号或者 -e 选项两种方式在一行中编写多条指令。可以使用分号将多个指令分割，或者下多个 -e 参数后面添加 sed 指令，sed支持一个或者多个 -e 参数，如果将分号放到 {} 中还可以实现对指令进行分组
+        + sed -n '1p;3p;5p' test.txt
+        + sed -n -e '1p' -e '3p' test.txt
+        + sed '/world/s/hello/hi/;s/the//' test.txt
+            + 先找到包含有 world 的行，然后将该行的 hello 替换成 hi，然后在替换该文件中所有行的第一个 the 为空
+        + sed '/world/{s/hello/hi/;s/the//}' test.txt
+            + 将含有 world 的行中 hello 修改为 hi 并且删除掉 the
+    + sed 指令脚本
+        + sed -f 读取 sed 指令文件并实现多指令操作
+        + sed -f script.sed test
+
+
+## 6.2 sed 高级指令
     
