@@ -74,3 +74,11 @@ ps -ef | grep [process_name]
 service [process_name] status
 ```
 
+9. 版本信息的获取
+```
+result=$(dhcpd -v 2>&1)
+echo $result
+```
++ 非系统软件的版本号不能直接赋值到变量中
++ 2>&1 标准错误输出重定向到标准输出
+

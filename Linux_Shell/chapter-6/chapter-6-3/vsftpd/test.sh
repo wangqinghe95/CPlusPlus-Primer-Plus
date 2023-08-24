@@ -62,7 +62,7 @@ fi
 # fi
 # echo $vsftpd_status
 
-# 返回值
+# 获取函数中的结果值
 get_str()
 {
     echo "running"
