@@ -1,0 +1,7 @@
+127.0.0.1 - - [04/Sep/2023:21:52:01 -0400] "GET / HTTP/1.1" 200 3602 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:88.0) Gecko/20100101 Firefox/88.0"
+127.0.0.1 - - [04/Sep/2023:21:52:02 -0400] "GET /icons/ubuntu-logo.png HTTP/1.1" 404 152 "http://127.0.0.1:81/" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:88.0) Gecko/20100101 Firefox/88.0"
+127.0.0.1 - - [04/Sep/2023:21:52:02 -0400] "GET /favicon.ico HTTP/1.1" 404 152 "http://127.0.0.1:81/" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:88.0) Gecko/20100101 Firefox/88.0"
+127.0.0.1 - - [04/Sep/2023:21:52:18 -0400] "GET /nginx-status HTTP/1.1" 404 152 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:88.0) Gecko/20100101 Firefox/88.0"
+127.0.0.1 - - [04/Sep/2023:21:52:26 -0400] "GET /nginx-status HTTP/1.1" 404 152 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:88.0) Gecko/20100101 Firefox/88.0"
+127.0.0.1 - - [04/Sep/2023:21:56:29 -0400] "GET /icons/ubuntu-logo.png HTTP/1.1" 404 152 "http://127.0.0.1:81/" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:88.0) Gecko/20100101 Firefox/88.0"
+127.0.0.1 - - [04/Sep/2023:21:56:42 -0400] "GET /nginx-status HTTP/1.1" 404 152 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:88.0) Gecko/20100101 Firefox/88.0"
