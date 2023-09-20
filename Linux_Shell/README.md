@@ -82,3 +82,19 @@ echo $result
 + 非系统软件的版本号不能直接赋值到变量中
 + 2>&1 标准错误输出重定向到标准输出
 
+10. 注释掉某文件中包含指定关键字的行
+```
+# 注释掉含有关键字的行
+sed -i '/[key_word]/s/^/#/' [file_path]
+# 取消含关键字行的注释符号
+sed -i '/[key_word]/s/^#//' [file_path]
+
+# mysql 安装过程中，为了允许远程登陆，会将 bind-address 配置给注释掉
+sed -i '/^bind-address/s/^/#/' /etc/mysql/mysql.conf.d/mysqld.cnf
+# 取消注释
+sed -i '/^bind-address/s/^#//' /etc/mysql/mysql.conf.d/mysqld.cnf
+```
+
+11. awk 从第二行开始，处理不以 + 号开头的行
+
+
