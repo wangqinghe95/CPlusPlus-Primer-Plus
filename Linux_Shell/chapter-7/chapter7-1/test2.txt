@@ -1,3 +1,0 @@
-biscuit:crisp:chicken
-salt-jam::oil,sugar
-banana:lemon,paer--apple:grape
